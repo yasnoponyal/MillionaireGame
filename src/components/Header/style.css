@@ -1,0 +1,39 @@
+.header__content {
+	background-color: #000000;
+	padding-inline: 100px;
+	padding-block: 30px;
+}
+
+
+.header__navbar {
+	display: flex;
+	justify-content: space-between;
+}
+
+.logo {
+	width: 150px;
+}
+
+.header__navbar-list {
+	display: flex;
+	gap: 25px;
+	align-items: center;
+	font-size: 28px;
+}
+
+.header__navbar-item {
+	display: flex;
+	gap: 5px;
+	color: #FFFFFF;
+	transition: .4s;
+	align-items: center;
+}
+
+.header__navbar-item svg {
+	display: inline;
+	vertical-align: sub;
+}
+
+.header__navbar-item:hover {
+	color: #743586;
+}

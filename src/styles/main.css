@@ -1,0 +1,120 @@
+@import './reset.css';
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+/* General */
+
+body {
+	font-family: 'Mulish', sans-serif;
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+.container {
+	max-width: 1900px;
+	padding-inline: 10px;
+}
+
+/* Themes */
+
+.light {
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+.dark {
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+
+/* Home Page */
+
+.home {
+	margin-top: 120px;
+}
+
+.home__content {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.home__button {
+	font-size: 24px;
+	font-weight: 600;
+	border: 2px solid #000000;
+	min-width: 300px;
+	display: block;
+	margin: 0 auto;
+	padding-block: 3px;
+	border-radius: 10px;
+}
+
+.dark .home__button {
+	border: 2px solid #FFFFFF;
+}
+
+
+/* Settings Page */
+
+.settings {
+	margin-top: 120px;
+}
+
+.settings__content {
+	text-align: center;
+}
+
+.settings__item {
+	margin-bottom: 30px;
+}
+
+.settings__title {
+	font-size: 24px;
+	margin-bottom: 20px;
+}
+
+.settings__choice {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+}
+
+.settings__button-theme {
+	font-size: 28px;
+	border: 2px solid #000000;
+	padding: 5px;
+	border-radius: 10px;
+	position: relative;
+}
+
+.dark .settings__button-theme {
+	border: 2px solid #FFFFFF;
+}
+
+.settings__button-theme::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	right: 50%;
+	bottom: -10px;
+	height: 2px;
+	background-color: #000000;
+	border-radius: 0 0 4px 4px;
+	transition: left 0.4s ease, right 0.4s ease;
+}
+
+.settings__button-theme.active::after {
+	left: 0;
+	right: 0;
+}
+
+.dark .settings__button-theme.active::after {
+	background-color: #FFFFFF;
+}
+
+.settings__button-theme svg {
+	display: flex;
+	align-items: center;
+}
+
