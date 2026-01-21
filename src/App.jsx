@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Settings from './pages/Settings';
@@ -31,7 +31,8 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/settings' element={<Settings />} />
-            <Route path='/question' element={<Question />} />
+            <Route path='/question/:id' element={<Question />} />
+            <Route path="/question" element={<Navigate to="/question/0" replace />} />
           </Routes>
         </div>
         <Footer />
