@@ -7,20 +7,16 @@ function Question() {
 	const { id } = useParams()
 	const navigate = useNavigate()
 
-	// Создаем состояние для хранения перемешанного списка
   const [currentQuestions, setCurrentQuestions] = useState([]);
 
   useEffect(() => {
-    // Если мы на первом вопросе, перемешиваем заново
     if (id === "0") {
       setCurrentQuestions(shuffleArray(questions));
     } 
-    // Если массив пустой (например, обновили страницу на середине теста), 
-    // берем обычный список, чтобы не было ошибки
     else if (currentQuestions.length === 0) {
       setCurrentQuestions(questions);
     }
-  }, [id]); // Следим за изменением ID
+  }, [id]);
 
 	const question = currentQuestions[Number(id)]
 
