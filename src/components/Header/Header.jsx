@@ -13,6 +13,7 @@ export default function Header() {
 			<div className="header__content">
 				<nav className='header__navbar'>
 					<NavLink to='/'><img src={logo} alt='Logotype' className='logo'></img></NavLink>
+					<h1 className='header__content-title'>Кто хочет стать миллионером?</h1>
 					<ul className='header__navbar-list'>
 						<NavLink to='/'><li className='header__navbar-item'> <HomeIcon sx={{ fontSize: 28}} /> Главная</li></NavLink>
 						<NavLink to='/settings'><li className='header__navbar-item'> <SettingsIcon sx={{ fontSize: 28}} />Настройки</li></NavLink>

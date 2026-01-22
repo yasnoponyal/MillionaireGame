@@ -61,6 +61,27 @@ body {
 	padding-block: 3px;
 	border-radius: 10px;
 	color: #000000;
+	transition: .3s ease-in-out;
+}
+
+.home__button:hover {
+	color: #8a46d4 !important;
+	border: 2px solid #8a46d4 !important;
+}
+
+.home__button:active {
+	color: #23389f !important;
+	border: 2px solid #23389f !important;
+}
+
+.dark .home__button:hover {
+	color: #9c93e5 !important;
+	border: 2px solid #9c93e5 !important;
+}
+
+.dark .home__button:active {
+	color: #7f4ea8 !important;
+	border: 2px solid #7f4ea8 !important;
 }
 
 .dark .home__button {
@@ -190,4 +211,3 @@ body {
 .dark .question__answer {
 	border: 3px solid #FFFFFF;
 }
-
