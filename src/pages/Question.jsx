@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 
-import { questions, shuffleArray } from "../helpers/questionsList"
+import { questions, generateQuestions } from "../helpers/questionsList"
 
 function Question() {
 	const { id } = useParams()
@@ -9,14 +9,12 @@ function Question() {
 
   const [currentQuestions, setCurrentQuestions] = useState([]);
 
-  useEffect(() => {
-    if (id === "0") {
-      setCurrentQuestions(shuffleArray(questions));
-    } 
-    else if (currentQuestions.length === 0) {
-      setCurrentQuestions(questions);
+ useEffect(() => {
+    if (currentQuestions.length === 0) {
+      const session = generateQuestions(questions);
+      setCurrentQuestions(session);
     }
-  }, [id]);
+  }, []);
 
 	const question = currentQuestions[Number(id)]
 
