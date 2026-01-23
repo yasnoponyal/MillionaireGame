@@ -1,24 +1,30 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 
-import { questions, generateQuestions } from "../helpers/questionsList"
+import { questions, generateQuestions, shuffleAnswers } from "../helpers/questionsList"
 
 function Question() {
 	const { id } = useParams()
 	const navigate = useNavigate()
 
-  const [currentQuestions, setCurrentQuestions] = useState([]);
+	const [currentQuestions, setCurrentQuestions] = useState([]);
 
- useEffect(() => {
-    if (currentQuestions.length === 0) {
-      const session = generateQuestions(questions);
-      setCurrentQuestions(session);
-    }
-  }, []);
+	useEffect(() => {
+		if (currentQuestions.length === 0) {
+			const session = generateQuestions(questions);
+			setCurrentQuestions(session);
+		}
+	}, []);
 
 	const question = currentQuestions[Number(id)]
 
-	if (!question) return <div>Загрузка...</div>;
+	const shuffledAnswers = useMemo(() => {
+		if (!question || !question.answers) return [];
+		return shuffleAnswers(question.answers);
+	}, [question]);
+
+
+
 
 	const nextQuestion = (answer) => {
 		if (answer === question.correct) {
@@ -34,6 +40,8 @@ function Question() {
 		}
 	}
 
+	if (!question) return <div>Загрузка...</div>;
+
 	return (
 		<section className="question">
 			<div className="container">
@@ -43,18 +51,13 @@ function Question() {
 						<h1 className="question__title">{question.title}</h1>
 					</div>
 					<div className="question__answers">
-						<div className="question__answer">
-							<button onClick={() => nextQuestion(question.first_answer)}>{question.first_answer}</button>
-						</div>
-						<div className="question__answer">
-							<button onClick={() => nextQuestion(question.second_answer)}>{question.second_answer}</button>
-						</div>
-						<div className="question__answer">
-							<button onClick={() => nextQuestion(question.third_answer)}>{question.third_answer}</button>
-						</div>
-						<div className="question__answer">
-							<button onClick={() => nextQuestion(question.fourth_answer)}>{question.fourth_answer}</button>
-						</div>
+						{shuffledAnswers.map((answer, index) => (
+							<div className="question__answer" key={index}>
+								<button onClick={() => nextQuestion(answer)}>
+									{answer}
+								</button>
+							</div>
+						))}
 					</div>
 				</div>
 			</div>
