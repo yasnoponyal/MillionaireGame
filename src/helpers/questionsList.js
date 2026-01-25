@@ -3,6 +3,9 @@ import { level2 } from "./questions/level2";
 import { level3 } from "./questions/level3";
 import { level4 } from "./questions/level4";
 import { level5 } from "./questions/level5";
+import { level6 } from "./questions/level6";
+import { level7 } from "./questions/level7";
+import { level8 } from "./questions/level8";
 
 
 const generateQuestions = (pool) => {
@@ -39,6 +42,16 @@ const questions = [
 
 	// Вопросы для номера 5
 	level5,
+
+	// Вопросы для номера 6
+	level6,
+
+	// Вопросы для номера 7
+	level7,
+
+	// Вопросы для номера 8 
+	level8,
+	
 ]
 
 export { questions, generateQuestions, shuffleAnswers }

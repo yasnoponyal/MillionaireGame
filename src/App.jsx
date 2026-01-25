@@ -5,6 +5,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './pages/Home';
 import Settings from './pages/Settings';
 import Question from './pages/Question';
+import Loss from './pages/Loss';
+import Win from './pages/Win';
+import Error404 from './pages/Error404';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -23,6 +26,7 @@ function App() {
     document.body.className = '';
     document.body.classList.add(theme);
   }, [theme]);
+
   return (
     <div className='App'>
       <Router>
@@ -33,6 +37,9 @@ function App() {
             <Route path='/settings' element={<Settings />} />
             <Route path='/question/:id' element={<Question />} />
             <Route path="/question" element={<Navigate to="/question/0" replace />} />
+            <Route path='/loss' element={<Loss />}></Route>
+            <Route path='/win' element={<Win />}></Route>
+            <Route path='*' element={<Error404 />}></Route>
           </Routes>
         </div>
         <Footer />

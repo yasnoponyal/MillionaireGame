@@ -38,6 +38,14 @@ body {
 	color: #FFFFFF;
 }
 
+/* 404 */
+
+.error {
+	text-align: center;
+	font-size: 40px;
+	margin-top: 120px;
+}
+
 
 /* Home Page */
 
@@ -217,4 +225,32 @@ body {
 
 .dark .question__answer {
 	border: 3px solid #FFFFFF;
+}
+
+/* Loss Page */
+
+.loss {
+	margin-top: 120px;
+}
+
+.loss__content {
+	text-align: center;
+}
+
+.loss__title {
+	font-size: 40px;
+}
+
+/* Win page */
+
+.win {
+	margin-top: 120px;
+}
+
+.win__content {
+	text-align: center;
+}
+
+.win__title {
+	font-size: 40px;
 }

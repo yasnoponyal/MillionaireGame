@@ -18,14 +18,16 @@ function Question() {
 
 	const question = currentQuestions[Number(id)]
 
+	// Перемешивание вариантов ответов
+	// Чтобы они не были всегда в одном порядке
 	const shuffledAnswers = useMemo(() => {
 		if (!question || !question.answers) return [];
 		return shuffleAnswers(question.answers);
 	}, [question]);
 
-
-
-
+	// Переход к следующему вопросу
+	// Если правильно - то переходишь
+	// Если нет - то не переходишь :D
 	const nextQuestion = (answer) => {
 		if (answer === question.correct) {
 			const nextId = Number(id) + 1
@@ -33,13 +35,14 @@ function Question() {
 			if (nextId < currentQuestions.length) {
 				navigate(`/question/${nextId}`)
 			} else {
-				navigate(`/`)
+				navigate(`/win`)
 			}
 		} else {
-			navigate(`/`)
+			navigate(`/loss`)
 		}
 	}
 
+	// Заглушка, чтобы было крутячно 
 	if (!question) return <div>Загрузка...</div>;
 
 	return (
