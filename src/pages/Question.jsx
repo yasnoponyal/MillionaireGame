@@ -3,20 +3,30 @@ import { useParams, useNavigate } from "react-router-dom"
 
 import { questions, generateQuestions, shuffleAnswers } from "../helpers/questionsList"
 
-import PercentIcon from '@mui/icons-material/Percent';
-import LooksTwoIcon from '@mui/icons-material/LooksTwo';
-import PhoneIcon from '@mui/icons-material/Phone';
+
+import Hints from "../components/Hints/Hints";
 
 function Question() {
 	const { id } = useParams()
 	const navigate = useNavigate()
 
 	const [currentQuestions, setCurrentQuestions] = useState([]);
+	// Второй шанс
+	const [isSecondChanceUsed, setIsSecondChanceUsed] = useState(false);
+	// 50 на 50
+	const [isFiftyFiftyUsed, setIsFiftyFiftyUsed] = useState(false);
+	// Помощь друга (правильный ответ)
+	const [isPhoneUsed, setIsPhoneUsed] = useState(false);
+	
+	const [visibleAnswers, setVisibleAnswers] = useState([]);
 
 	useEffect(() => {
 		if (currentQuestions.length === 0) {
 			const session = generateQuestions(questions);
 			setCurrentQuestions(session);
+			setIsSecondChanceUsed(false);
+			setIsFiftyFiftyUsed(false);
+			setIsPhoneUsed(false);
 		}
 	}, []);
 
@@ -33,6 +43,38 @@ function Question() {
 		return shuffleAnswers(question.answers);
 	}, [question]);
 
+	useEffect(() => {
+		setVisibleAnswers([]);
+	}, [id]);
+
+	const handleFiftyFifty = () => {
+		if (!isFiftyFiftyUsed && question && shuffledAnswers.length > 0) {
+			const wrongAnswers = shuffledAnswers.filter(answer => answer !== question.correct);
+			const randomWrongAnswer = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
+			setVisibleAnswers([question.correct, randomWrongAnswer]);
+			setIsFiftyFiftyUsed(true);
+		}
+	};
+
+	const handlePhone = () => {
+		if (!isPhoneUsed && question && shuffledAnswers.length > 0) {
+			setVisibleAnswers([question.correct]);
+			setIsPhoneUsed(true);
+		}
+	};
+
+	const displayAnswers = useMemo(() => {
+		if (!question || shuffledAnswers.length === 0) return [];
+
+		if (visibleAnswers.length > 0) {
+			return shuffledAnswers.map(answer => 
+				visibleAnswers.includes(answer) ? answer : ''
+			);
+		}
+		
+		return shuffledAnswers;
+	}, [shuffledAnswers, visibleAnswers, question]);
+
 	// Переход к следующему вопросу
 	// Если правильно - то переходишь
 	// Если нет - то не переходишь :D
@@ -47,7 +89,12 @@ function Question() {
 				navigate(`/win`, { state: { winAmount } })
 			}
 		} else {
-			navigate(`/loss`)
+			if (!isSecondChanceUsed) {
+				setIsSecondChanceUsed(true);
+				return;
+			} else {
+				navigate(`/loss`)
+			}
 		}
 	}
 
@@ -77,11 +124,13 @@ function Question() {
 				</div>
 				<div className="question__content">
 					<div className="question__hints-content">
-						<div className="question__hints">
-							<button className="question__hint"><PercentIcon sx={{ fontSize: 28 }} /></button>
-							<button className="question__hint"><LooksTwoIcon sx={{ fontSize: 28 }} /></button>
-							<button className="question__hint"><PhoneIcon sx={{ fontSize: 28 }} /></button>
-						</div>
+						<Hints 
+							isSecondChanceUsed={isSecondChanceUsed}
+							isFiftyFiftyUsed={isFiftyFiftyUsed}
+							isPhoneUsed={isPhoneUsed}
+							onFiftyFiftyActivate={handleFiftyFifty}
+							onPhoneActivate={handlePhone}
+						/>
 						{currentQuestionIndex >= 1 && (
 							<div className="question__win">
 								<button className="question__win-button" onClick={handleTakeWin}>Забрать выигрыш</button>
@@ -93,11 +142,18 @@ function Question() {
 						<h1 className="question__title">{question.title}</h1>
 					</div>
 					<div className="question__answers">
-						{shuffledAnswers.map((answer, index) => (
-							<div className="question__answer" key={index}>
-								<button onClick={() => nextQuestion(answer)}>
-									{answer}
-								</button>
+						{displayAnswers.map((answer, index) => (
+							<div 
+								className={`question__answer ${!answer ? 'question__answer--hidden' : ''}`} 
+								key={index}
+							>
+								{answer ? (
+									<button onClick={() => nextQuestion(answer)}>
+										{answer}
+									</button>
+								) : (
+									<button disabled className="question__answer--hidden"></button>
+								)}
 							</div>
 						))}
 					</div>

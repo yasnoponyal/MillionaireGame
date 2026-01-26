@@ -2,8 +2,6 @@
 	background-color: #000000;
 	padding-inline: 100px;
 	padding-block: 30px;
-	display: flex;
-	justify-content: center;
 	margin-top: 120px;
 }
 
@@ -15,4 +13,27 @@
 	font-weight: 700;
 	font-size: 18px;
 	color: #FFFFFF;
+	text-align: center;
+}
+
+.footer__links {
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+	gap: 5px;
+}
+
+.footer__link {
+	color: #FFFFFF;
+	padding: 8px;
+	transition: .3s ease-in;
+}
+
+.footer__link svg {
+	display: inline;
+	vertical-align: sub;
+}
+
+.footer__link:hover {
+	color: #9c93e5;
 }

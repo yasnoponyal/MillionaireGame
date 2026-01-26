@@ -5,7 +5,7 @@ import logo from './../../images/logo.png';
 
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
-import PersonIcon from '@mui/icons-material/Person';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 export default function Header() {
 	return (
@@ -17,7 +17,7 @@ export default function Header() {
 					<ul className='header__navbar-list'>
 						<NavLink to='/'><li className='header__navbar-item'> <HomeIcon sx={{ fontSize: 28}} /> Главная</li></NavLink>
 						<NavLink to='/settings'><li className='header__navbar-item'> <SettingsIcon sx={{ fontSize: 28}} />Настройки</li></NavLink>
-						<li className='header__navbar-item'> <PersonIcon sx={{ fontSize: 28}} />Автор</li>
+						<li className='header__navbar-item'> <MenuBookIcon sx={{ fontSize: 28}} />Правила</li>
 					</ul>
 				</nav>
 			</div>
