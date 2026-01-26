@@ -17,8 +17,6 @@ import useLocalStorage from './utils/UseLocalStorage';
 import './styles/main.css';
 
 
-
-
 function App() {
   const [theme] = useLocalStorage('theme', 'light');
 
