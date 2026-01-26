@@ -3,8 +3,8 @@ function Loss() {
 		<section className="loss">
 			<div className="container">
 				<div className="loss__content">
-					<h1 className="loss__title">Вы проиграли!</h1>
-					<p>Ваша сумма: 0 руб</p>
+					<h1 className="loss__title">Вы неправильно ответили на вопрос!</h1>
+					<p>Заработанная сумма: 0 руб</p>
 				</div>
 			</div>
 		</section>
