@@ -17,7 +17,7 @@ function Question() {
 	const [isFiftyFiftyUsed, setIsFiftyFiftyUsed] = useState(false);
 	// Помощь друга (правильный ответ)
 	const [isPhoneUsed, setIsPhoneUsed] = useState(false);
-	
+
 	const [visibleAnswers, setVisibleAnswers] = useState([]);
 
 	useEffect(() => {
@@ -75,9 +75,6 @@ function Question() {
 		return shuffledAnswers;
 	}, [shuffledAnswers, visibleAnswers, question]);
 
-	// Переход к следующему вопросу
-	// Если правильно - то переходишь
-	// Если нет - то не переходишь :D
 	const nextQuestion = (answer) => {
 		if (answer === question.correct) {
 			const nextId = Number(id) + 1
@@ -89,11 +86,20 @@ function Question() {
 				navigate(`/win`, { state: { winAmount } })
 			}
 		} else {
+			const currentQuestionIndex = Number(id);
+
+			let guaranteedAmount = 0;
+			goldIndices.forEach((goldSum) => {
+				if (currentQuestionIndex > goldSum) {
+					guaranteedAmount = sums[goldSum];
+				}
+			});
+
 			if (!isSecondChanceUsed) {
 				setIsSecondChanceUsed(true);
 				return;
 			} else {
-				navigate(`/loss`)
+				navigate(`/loss`, { state: { lostAmount: guaranteedAmount } })
 			}
 		}
 	}

@@ -1,3 +1,9 @@
+.disabled {
+	display: none;
+}
+
+/* Header not in game */
+
 .header__content {
 	background-color: #000000;
 	padding-inline: 100px;
@@ -89,4 +95,29 @@
 		text-align: center;
 		margin-top: 20px;
 	}
+}
+
+/* Header in game */
+
+.header__navbar--game {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.header__back {
+	color: #FFFFFF;
+	display: flex;
+	font-size: 28px;
+	align-items: center;
+	gap: 15px;
+	border: 2px solid #FFFFFF;
+	padding: 10px;
+	border-radius: 10px;
+	transition: .3s ease-in-out;
+}
+
+.header__back:hover {
+	color: #9c93e5;
+	border: 2px solid #9c93e5;
 }
