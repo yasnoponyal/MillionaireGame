@@ -20,6 +20,8 @@ function Question() {
 
 	const [visibleAnswers, setVisibleAnswers] = useState([]);
 
+	const [answerStatus, setAnswerStatus] = useState(null)
+
 	useEffect(() => {
 		if (currentQuestions.length === 0) {
 			const session = generateQuestions(questions);
@@ -31,9 +33,7 @@ function Question() {
 	}, []);
 
 	const question = currentQuestions[Number(id)]
-
 	const sums = [1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 300000, 400000, 500000, 800000, 1000000, 1500000, 3000000];
-
 	const goldIndices = [6, 10];
 
 	// Перемешивание вариантов ответов
@@ -45,6 +45,7 @@ function Question() {
 
 	useEffect(() => {
 		setVisibleAnswers([]);
+		setAnswerStatus(null)
 	}, [id]);
 
 	const handleFiftyFifty = () => {
@@ -67,42 +68,54 @@ function Question() {
 		if (!question || shuffledAnswers.length === 0) return [];
 
 		if (visibleAnswers.length > 0) {
-			return shuffledAnswers.map(answer => 
+			return shuffledAnswers.map(answer =>
 				visibleAnswers.includes(answer) ? answer : ''
 			);
 		}
-		
+
 		return shuffledAnswers;
 	}, [shuffledAnswers, visibleAnswers, question]);
 
 	const nextQuestion = (answer) => {
-		if (answer === question.correct) {
-			const nextId = Number(id) + 1
+		if (answerStatus) return;
 
-			if (nextId < currentQuestions.length) {
-				navigate(`/question/${nextId}`)
-			} else {
-				const winAmount = sums[sums.length - 1];
-				navigate(`/win`, { state: { winAmount } })
-			}
-		} else {
-			const currentQuestionIndex = Number(id);
+		setAnswerStatus({ answer, status: 'pending' });
 
-			let guaranteedAmount = 0;
-			goldIndices.forEach((goldSum) => {
-				if (currentQuestionIndex > goldSum) {
-					guaranteedAmount = sums[goldSum];
+		setTimeout(() => {
+			const isCorrect = answer === question.correct;
+			setAnswerStatus({ answer, status: isCorrect ? 'correct' : 'wrong' });
+
+			setTimeout(() => {
+				if (isCorrect) {
+					const nextId = Number(id) + 1;
+					if (nextId < currentQuestions.length) {
+						navigate(`/question/${nextId}`);
+					} else {
+						const winAmount = sums[sums.length - 1];
+						navigate(`/win`, { state: { winAmount } });
+					}
+				} else {
+					const currentQuestionIndex = Number(id);
+					let guaranteedAmount = 0;
+					goldIndices.forEach((goldSum) => {
+						if (currentQuestionIndex > goldSum) {
+							guaranteedAmount = sums[goldSum];
+						}
+					});
+
+					if (!isSecondChanceUsed) {
+						setIsSecondChanceUsed(true);
+						setAnswerStatus(null);
+						if (visibleAnswers.length > 0) {
+							setVisibleAnswers(prev => prev.filter(a => a !== answer));
+						}
+					} else {
+						navigate(`/loss`, { state: { lostAmount: guaranteedAmount } });
+					}
 				}
-			});
-
-			if (!isSecondChanceUsed) {
-				setIsSecondChanceUsed(true);
-				return;
-			} else {
-				navigate(`/loss`, { state: { lostAmount: guaranteedAmount } })
-			}
-		}
-	}
+			}, 1000);
+		}, 3000);
+	};
 
 	const handleTakeWin = () => {
 		const winAmount = sums[currentQuestionIndex - 1];
@@ -130,7 +143,7 @@ function Question() {
 				</div>
 				<div className="question__content">
 					<div className="question__hints-content">
-						<Hints 
+						<Hints
 							isSecondChanceUsed={isSecondChanceUsed}
 							isFiftyFiftyUsed={isFiftyFiftyUsed}
 							isPhoneUsed={isPhoneUsed}
@@ -148,20 +161,30 @@ function Question() {
 						<h1 className="question__title">{question.title}</h1>
 					</div>
 					<div className="question__answers">
-						{displayAnswers.map((answer, index) => (
-							<div 
-								className={`question__answer ${!answer ? 'question__answer--hidden' : ''}`} 
-								key={index}
-							>
-								{answer ? (
-									<button onClick={() => nextQuestion(answer)}>
-										{answer}
-									</button>
-								) : (
-									<button disabled className="question__answer--hidden"></button>
-								)}
-							</div>
-						))}
+						{displayAnswers.map((answer, index) => {
+							let statusClass = "";
+							if (answerStatus?.answer === answer) {
+								statusClass = `answer-${answerStatus.status}`;
+							}
+
+							return (
+								<div
+									className={`question__answer ${!answer ? 'question__answer--hidden' : ''} ${statusClass}`}
+									key={index}
+								>
+									{answer ? (
+										<button
+											onClick={() => nextQuestion(answer)}
+											disabled={!!answerStatus}
+										>
+											{answer}
+										</button>
+									) : (
+										<button disabled className="question__answer--hidden"></button>
+									)}
+								</div>
+							);
+						})}
 					</div>
 				</div>
 			</div>

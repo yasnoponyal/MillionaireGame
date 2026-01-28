@@ -330,6 +330,34 @@ body {
 	border: 2px solid #FFFFFF;
 }
 
+.question__answer.answer-pending {
+  border-color: #FFD700 !important;
+  background-color: #FFD700 !important;
+  animation: blink-block 0.8s ease-in-out infinite;
+}
+
+.question__answer.answer-correct {
+  border-color: #28a745 !important;
+  background-color: #28a745 !important;
+}
+
+.question__answer.answer-wrong {
+  border-color: #dc3545 !important;
+  background-color: #dc3545 !important;
+}
+
+@keyframes blink-block {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 /* Loss Page */
 
 .loss {
