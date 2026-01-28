@@ -25,7 +25,7 @@ export default function Header() {
             <ul className='header__navbar-list'>
               <NavLink to='/'><li className='header__navbar-item'> <HomeIcon sx={{ fontSize: 28}} /> Главная</li></NavLink>
               <NavLink to='/settings'><li className='header__navbar-item'> <SettingsIcon sx={{ fontSize: 28}} />Настройки</li></NavLink>
-              <li className='header__navbar-item'> <MenuBookIcon sx={{ fontSize: 28}} />Правила</li>
+              <NavLink to='/rules'><li className='header__navbar-item'> <MenuBookIcon sx={{ fontSize: 28}} />Правила</li></NavLink>
             </ul>
           </nav>
         )}

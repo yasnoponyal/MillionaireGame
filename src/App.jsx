@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 import Home from './pages/Home';
 import Settings from './pages/Settings';
+import Rules from './pages/Rules';
 import Question from './pages/Question';
 import Loss from './pages/Loss';
 import Win from './pages/Win';
@@ -33,6 +34,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/settings' element={<Settings />} />
+            <Route path='/rules' element={<Rules />} />
             <Route path='/question/:id' element={<Question />} />
             <Route path="/question" element={<Navigate to="/question/0" replace />} />
             <Route path='/loss' element={<Loss />}></Route>
