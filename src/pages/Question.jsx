@@ -1,71 +1,65 @@
-import { useState, useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 
-import { questions, generateQuestions, shuffleAnswers } from "../helpers/questionsList"
-
+import { useAnswerHandling } from "../utils/useAnswerHandling";
+import { useHints } from "../utils/useHints";
+import { useGameState } from "../utils/useGameState";
+import { getWinAmount } from "../helpers/winAmount";
 
 import Hints from "../components/Hints/Hints";
+import Sums from "../components/Sums/Sums";
+import QuestionCard from "../components/QuestionCard/QuestionCard";
+import AnswersList from "../components/AnswersList/AnswersList";
+import TakeWinButton from "../components/TakeWinButton/TakeWinButton";
 
 function Question() {
 	const { id } = useParams()
 	const navigate = useNavigate()
+	const currentQuestionIndex = Number(id);
 
-	const [currentQuestions, setCurrentQuestions] = useState([]);
-	// Второй шанс
-	const [isSecondChanceUsed, setIsSecondChanceUsed] = useState(false);
-	// 50 на 50
-	const [isFiftyFiftyUsed, setIsFiftyFiftyUsed] = useState(false);
-	// Помощь друга (правильный ответ)
-	const [isPhoneUsed, setIsPhoneUsed] = useState(false);
+	const {
+		currentQuestion,
+		currentQuestions,
+		shuffledAnswers,
+		visibleAnswers,
+		setVisibleAnswers,
+		isSecondChanceUsed,
+		setIsSecondChanceUsed,
+		isFiftyFiftyUsed,
+		setIsFiftyFiftyUsed,
+		isPhoneUsed,
+		setIsPhoneUsed,
+	} = useGameState(id);
 
-	const [visibleAnswers, setVisibleAnswers] = useState([]);
-
-	const [answerStatus, setAnswerStatus] = useState(null)
-
-	useEffect(() => {
-		if (currentQuestions.length === 0) {
-			const session = generateQuestions(questions);
-			setCurrentQuestions(session);
-			setIsSecondChanceUsed(false);
-			setIsFiftyFiftyUsed(false);
-			setIsPhoneUsed(false);
-		}
-	}, []);
-
-	const question = currentQuestions[Number(id)]
-	const sums = [1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 300000, 400000, 500000, 800000, 1000000, 1500000, 3000000];
-	const goldIndices = [6, 10];
-
-	// Перемешивание вариантов ответов
-	// Чтобы они не были всегда в одном порядке
-	const shuffledAnswers = useMemo(() => {
-		if (!question || !question.answers) return [];
-		return shuffleAnswers(question.answers);
-	}, [question]);
+	// Обработка ответов
+	const { answerStatus, setAnswerStatus, handleAnswer } = useAnswerHandling({
+		questionId: id,
+		currentQuestion,
+		currentQuestions,
+		isSecondChanceUsed,
+		setIsSecondChanceUsed,
+		visibleAnswers,
+		setVisibleAnswers,
+	});
 
 	useEffect(() => {
-		setVisibleAnswers([]);
-		setAnswerStatus(null)
-	}, [id]);
+		setAnswerStatus(null);
+	}, [id, setAnswerStatus]);
 
-	const handleFiftyFifty = () => {
-		if (!isFiftyFiftyUsed && question && shuffledAnswers.length > 0) {
-			const wrongAnswers = shuffledAnswers.filter(answer => answer !== question.correct);
-			const randomWrongAnswer = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
-			setVisibleAnswers([question.correct, randomWrongAnswer]);
-			setIsFiftyFiftyUsed(true);
-		}
-	};
-
-	const handlePhone = () => {
-		if (!isPhoneUsed && question && shuffledAnswers.length > 0) {
-			setVisibleAnswers([question.correct]);
-			setIsPhoneUsed(true);
-		}
-	};
+	// Управление подсказками
+	const { handleFiftyFifty, handlePhone } = useHints({
+		currentQuestion,
+		shuffledAnswers,
+		isFiftyFiftyUsed,
+		setIsFiftyFiftyUsed,
+		isPhoneUsed,
+		setIsPhoneUsed,
+		visibleAnswers,
+		setVisibleAnswers,
+	});
 
 	const displayAnswers = useMemo(() => {
-		if (!question || shuffledAnswers.length === 0) return [];
+		if (!currentQuestion || shuffledAnswers.length === 0) return [];
 
 		if (visibleAnswers.length > 0) {
 			return shuffledAnswers.map(answer =>
@@ -74,73 +68,21 @@ function Question() {
 		}
 
 		return shuffledAnswers;
-	}, [shuffledAnswers, visibleAnswers, question]);
+	}, [shuffledAnswers, visibleAnswers, currentQuestion]);
 
-	const nextQuestion = (answer) => {
-		if (answerStatus) return;
-
-		setAnswerStatus({ answer, status: 'pending' });
-
-		setTimeout(() => {
-			const isCorrect = answer === question.correct;
-			setAnswerStatus({ answer, status: isCorrect ? 'correct' : 'wrong' });
-
-			setTimeout(() => {
-				if (isCorrect) {
-					const nextId = Number(id) + 1;
-					if (nextId < currentQuestions.length) {
-						navigate(`/question/${nextId}`);
-					} else {
-						const winAmount = sums[sums.length - 1];
-						navigate(`/win`, { state: { winAmount } });
-					}
-				} else {
-					const currentQuestionIndex = Number(id);
-					let guaranteedAmount = 0;
-					goldIndices.forEach((goldSum) => {
-						if (currentQuestionIndex > goldSum) {
-							guaranteedAmount = sums[goldSum];
-						}
-					});
-
-					if (!isSecondChanceUsed) {
-						setIsSecondChanceUsed(true);
-						setAnswerStatus(null);
-						if (visibleAnswers.length > 0) {
-							setVisibleAnswers(prev => prev.filter(a => a !== answer));
-						}
-					} else {
-						navigate(`/loss`, { state: { lostAmount: guaranteedAmount } });
-					}
-				}
-			}, 1000);
-		}, 3000);
-	};
 
 	const handleTakeWin = () => {
-		const winAmount = sums[currentQuestionIndex - 1];
+		const winAmount = getWinAmount(currentQuestionIndex);
 		navigate(`/win`, { state: { winAmount } })
 	}
 
 	// Заглушка, чтобы было крутячно 
-	if (!question) return <div>Загрузка...</div>;
-
-	const currentQuestionIndex = Number(id);
+	if (!currentQuestion) return <div>Загрузка...</div>;
 
 	return (
 		<section className="question">
 			<div className="container">
-				<div className="question__sums">
-					{sums.map((sum, index) => {
-						const isComplete = index < currentQuestionIndex;
-						const isGold = goldIndices.includes(index);
-						const className = `question__sum ${isComplete ? 'complete' : ''} ${isGold ? 'gold' : ''}`.trim();
-
-						return (
-							<p key={index} className={className}>{sum}</p>
-						);
-					})}
-				</div>
+				<Sums currentQuestionIndex={currentQuestionIndex} />
 				<div className="question__content">
 					<div className="question__hints-content">
 						<Hints
@@ -150,42 +92,20 @@ function Question() {
 							onFiftyFiftyActivate={handleFiftyFifty}
 							onPhoneActivate={handlePhone}
 						/>
-						{currentQuestionIndex >= 1 && (
-							<div className="question__win">
-								<button className="question__win-button" onClick={handleTakeWin}>Забрать выигрыш</button>
-							</div>
-						)}
+						<TakeWinButton
+							show={currentQuestionIndex >= 1}
+							onClick={handleTakeWin}
+						/>
 					</div>
-					<div className="question__info">
-						<p className="question__number">Вопрос {Number(id) + 1}</p>
-						<h1 className="question__title">{question.title}</h1>
-					</div>
-					<div className="question__answers">
-						{displayAnswers.map((answer, index) => {
-							let statusClass = "";
-							if (answerStatus?.answer === answer) {
-								statusClass = `answer-${answerStatus.status}`;
-							}
-
-							return (
-								<div
-									className={`question__answer ${!answer ? 'question__answer--hidden' : ''} ${statusClass}`}
-									key={index}
-								>
-									{answer ? (
-										<button
-											onClick={() => nextQuestion(answer)}
-											disabled={!!answerStatus}
-										>
-											{answer}
-										</button>
-									) : (
-										<button disabled className="question__answer--hidden"></button>
-									)}
-								</div>
-							);
-						})}
-					</div>
+					<QuestionCard
+						questionNumber={currentQuestionIndex + 1}
+						questionTitle={currentQuestion.title}
+					/>
+					<AnswersList
+						answers={displayAnswers}
+						onAnswerClick={handleAnswer}
+						answerStatus={answerStatus}
+					/>
 				</div>
 			</div>
 		</section>
