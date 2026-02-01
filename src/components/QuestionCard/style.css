@@ -1,0 +1,23 @@
+.question__info {
+	border: 5px solid #000000;
+	max-width: 1000px;
+	display: block;
+	margin: 0 auto;
+	border-radius: 25px;
+}
+
+.dark .question__info {
+	border: 5px solid #FFFFFF;
+}
+
+.question__number {
+	font-size: 20px;
+	margin-bottom: 40px;
+	margin-top: 20px;
+}
+
+.question__title {
+	font-size: 32px;
+	margin-bottom: 50px;
+	padding-inline: 5px;
+}

@@ -1,0 +1,27 @@
+.question__sums {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 15px;
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 20px;
+}
+
+.question__sum {
+	font-size: 18px;
+	padding: 5px;
+	border-radius: 10px;
+}
+
+.question__sum.gold {
+	color: #e5a934;
+}
+
+.question__sum.complete {
+	border: 2px solid #000000;
+}
+
+.dark .question__sum.complete {
+	border: 2px solid #FFFFFF;
+}

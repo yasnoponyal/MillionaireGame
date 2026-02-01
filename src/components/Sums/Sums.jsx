@@ -17,7 +17,7 @@ function Sums( { currentQuestionIndex }) {
 				].filter(Boolean).join(' ')
 
 				return (
-					<p key={index} className={className}>{sum}</p>
+					<p key={index} className={className}><span>{sum}</span></p>
 				)
 			})}
 		</div>

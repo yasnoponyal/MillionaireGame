@@ -1,0 +1,14 @@
+.question__answers {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	margin-top: 60px;
+	gap: 40px;
+	width: 100%;
+	max-width: 100%;
+}
+
+@media (max-width: 768px) {
+	.question__answers {
+		grid-template-columns: repeat(1, 1fr);
+	}
+}
