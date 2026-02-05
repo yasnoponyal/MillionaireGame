@@ -251,3 +251,94 @@ body {
 .win__title {
 	font-size: 40px;
 }
+
+/* Create Game Page */
+
+.create {
+	margin-top: 60px;
+}
+
+.create__title {
+	text-align: center;
+	font-size: 40px;
+}
+
+.create__buttons {
+	display: flex;
+	justify-content: center;
+	margin-top: 30px;
+	gap: 50px;
+}
+
+.create__button {
+	font-size: 24px;
+	border: 2px solid #000000;
+	padding: 8px 32px;
+	border-radius: 10px;
+}
+
+.dark .create__button {
+	border-color: #FFFFFF;
+}
+
+.create__question {
+	margin-top: 60px;
+	text-align: center;
+}
+
+.create__question--number,
+.create__question--answers {
+	font-size: 28px;
+	margin-bottom: 30px;
+}
+
+.create__question--title {
+	text-align: center;
+	font-size: 24px;
+	border: 2px solid #000000;
+	padding: 8px;
+	border-radius: 10px;
+	margin-bottom: 30px;
+}
+
+.dark .create__question--title {
+	border: 2px solid #FFFFFF;
+}
+
+.create__question--answer {
+	display: block;
+	text-align: center;
+	margin: 0 auto;
+	border: 2px solid #000000;
+	font-size: 24px;
+	padding: 8px;
+	margin-bottom: 15px;
+	border-radius: 10px;
+}
+
+.dark .create__question--answer {
+	border: 2px solid #FFFFFF;
+}
+
+.create__begin-game {
+	margin-top: 60px;
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+}
+
+.begin-game {
+	font-size: 28px;
+	border: 2px solid #000000;
+	padding: 8px 32px;
+	border-radius: 10px;
+}
+
+.dark .begin-game {
+	border-color: #FFFFFF;
+}
+
+.disabled-button {
+	color: #777777;
+	border-color: #777777 !important;
+}

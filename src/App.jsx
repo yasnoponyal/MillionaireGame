@@ -9,6 +9,7 @@ import Question from './pages/Question';
 import Loss from './pages/Loss';
 import Win from './pages/Win';
 import Error404 from './pages/Error404';
+import CreateGame from './pages/CreateGame';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -37,6 +38,7 @@ function App() {
             <Route path='/rules' element={<Rules />} />
             <Route path='/question/:id' element={<Question />} />
             <Route path="/question" element={<Navigate to="/question/0" replace />} />
+            <Route path='/create' element={<CreateGame />} />
             <Route path='/loss' element={<Loss />}></Route>
             <Route path='/win' element={<Win />}></Route>
             <Route path='*' element={<Error404 />}></Route>

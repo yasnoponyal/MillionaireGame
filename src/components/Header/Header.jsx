@@ -12,7 +12,8 @@ export default function Header() {
 
   const isGame = location.pathname.startsWith('/question') || 
                    location.pathname === '/loss' || 
-                   location.pathname === '/win';
+                   location.pathname === '/win' ||
+                   location.pathname === '/create';
 
   return (
     <header className="header">
