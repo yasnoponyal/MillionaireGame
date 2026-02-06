@@ -281,6 +281,17 @@ body {
 	border-color: #FFFFFF;
 }
 
+.create__question--content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 100px;
+}
+
+.create__question--slider {
+	margin-top: 100px;
+}
+
 .create__question {
 	margin-top: 60px;
 	text-align: center;
@@ -290,6 +301,7 @@ body {
 .create__question--answers {
 	font-size: 28px;
 	margin-bottom: 30px;
+	font-weight: 700;
 }
 
 .create__question--title {
@@ -341,4 +353,154 @@ body {
 .disabled-button {
 	color: #777777;
 	border-color: #777777 !important;
+}
+
+/* Общие стили контейнера (если их еще нет) */
+.create__question--content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 500px;
+}
+
+.create__question {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 60px;
+	animation-duration: .5s;
+}
+
+.create__question--title {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 30px;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    font-size: 22px;
+}
+
+.dark .create__question--title {
+	border-color: #FFFFFF;
+}
+
+.create__question--answer {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #000000;
+    border-radius: 6px;
+}
+
+.dark .create__question--answer {
+	border-color: #FFFFFF;
+}
+
+/* Кнопки управления */
+.create__button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.begin-game {
+    padding: 15px 40px;
+    font-size: 28px;
+    background-color: #4CAF50;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.begin-game:not(.disabled-button):hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.disabled-button {
+    background-color: #CCCCCC;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.slide-next {
+    animation-name: slideInRight;
+}
+
+.slide-prev {
+    animation-name: slideInLeft;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ... Предыдущие стили ... */
+
+/* Сетка для инпутов ответов (опционально, чтобы было аккуратнее) */
+.answers-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Стили для блока выбора правильного ответа */
+.create__question--correct {
+    margin-top: 20px;
+    width: 100%;
+    text-align: left;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #000000;
+}
+
+.dark .create__question--correct {
+	border-color: #FFFFFF;
+}
+
+.create__question--correct label {
+    display: block;
+	text-align: center;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #000000;
+	font-size: 24px;
+}
+
+.dark .create__question--correct label {
+	color: #FFFFFF;
+}
+
+.create__select {
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    outline: none;
+	color: #000000;
 }

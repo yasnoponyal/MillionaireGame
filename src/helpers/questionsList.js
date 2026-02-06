@@ -14,71 +14,62 @@ import { level13 } from "./questions/level13";
 import { level14 } from "./questions/level14";
 import { level15 } from "./questions/level15";
 
+// Вспомогательная функция для получения кастомных вопросов
+const getCustomQuestions = () => {
+	const mode = localStorage.getItem('gameMode');
+	const saved = localStorage.getItem('millionaire-questions');
+
+	// Если режим не кастомный или сохранений нет, возвращаем null
+	if (mode !== 'custom' || !saved) return null;
+
+	try {
+		const parsedQuestions = JSON.parse(saved);
+		// Проверяем, что вопросов ровно 15
+		if (parsedQuestions.length === 15) {
+			return parsedQuestions.map(q => ({
+				// Маппинг полей, чтобы гарантировать совместимость с игрой
+				...q,
+				// Некоторые версии игры используют поле 'correct', другие 'correctAnswer'. 
+				// Создадим оба поля для надежности.
+				correct: q.answers[q.correctAnswer],
+			}));
+		}
+	} catch (e) {
+		console.error("Ошибка при чтении вопросов:", e);
+	}
+	return null;
+}
+
 const generateQuestions = (pool) => {
-  return pool.map(group => {
-    const randomIndex = Math.floor(Math.random() * group.length);
-    return group[randomIndex];
-  });
+	// 1. Сначала пробуем загрузить свои вопросы
+	const customQuestions = getCustomQuestions();
+
+	if (customQuestions) {
+		// Если есть кастомные вопросы, возвращаем их напрямую.
+		// Нам не нужно выбирать случайные, так как пользователь создал ровно 15 штук.
+		return customQuestions;
+	}
+
+	// 2. Если своих вопросов нет, работаем по старой логике (стандартные вопросы)
+	return pool.map(group => {
+		const randomIndex = Math.floor(Math.random() * group.length);
+		return group[randomIndex];
+	});
 };
 
 const shuffleAnswers = (array) => {
-  const shuffled = [...array]; 
-
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-
-  return shuffled;
+	const shuffled = [...array];
+	for (let i = shuffled.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+	}
+	return shuffled;
 };
 
 const questions = [
-	// Вопросы для номера 1
-	level1,
+	level1, level2, level3, level4, level5,
+	level6, level7, level8, level9, level10,
+	level11, level12, level13, level14, level15
+];
 
-	// Вопросы для номера 2
-	level2,
-
-	// Вопросы для номера 3
-	level3,
-
-	// Вопросы для номера 4
-	level4,
-
-	// Вопросы для номера 5
-	level5,
-
-	// Вопросы для номера 6
-	level6,
-
-	// Вопросы для номера 7
-	level7,
-
-	// Вопросы для номера 8 
-	level8,
-
-	// Вопросы для номера 9
-	level9,
-
-	// Вопросы для номера 10
-	level10,
-
-	// Вопросы для номера 11
-	level11,
-
-	// Вопросы для номера 12
-	level12,
-
-	// Вопросы для номера 13
-	level13,
-
-	// Вопросы для номера 14
-	level14,
-
-	// Вопросы для номера 15
-	level15
-
-]
-
-export { questions, generateQuestions, shuffleAnswers }
+export { questions, generateQuestions, shuffleAnswers };

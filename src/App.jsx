@@ -13,7 +13,7 @@ import CreateGame from './pages/CreateGame';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import useLocalStorage from './utils/UseLocalStorage';
+import useLocalStorage from './utils/useLocalStorage';
 
 
 import './styles/main.css';
