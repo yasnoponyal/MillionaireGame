@@ -14,23 +14,17 @@ import { level13 } from "./questions/level13";
 import { level14 } from "./questions/level14";
 import { level15 } from "./questions/level15";
 
-// Вспомогательная функция для получения кастомных вопросов
 const getCustomQuestions = () => {
 	const mode = localStorage.getItem('gameMode');
 	const saved = localStorage.getItem('millionaire-questions');
 
-	// Если режим не кастомный или сохранений нет, возвращаем null
 	if (mode !== 'custom' || !saved) return null;
 
 	try {
 		const parsedQuestions = JSON.parse(saved);
-		// Проверяем, что вопросов ровно 15
 		if (parsedQuestions.length === 15) {
 			return parsedQuestions.map(q => ({
-				// Маппинг полей, чтобы гарантировать совместимость с игрой
 				...q,
-				// Некоторые версии игры используют поле 'correct', другие 'correctAnswer'. 
-				// Создадим оба поля для надежности.
 				correct: q.answers[q.correctAnswer],
 			}));
 		}
@@ -41,16 +35,12 @@ const getCustomQuestions = () => {
 }
 
 const generateQuestions = (pool) => {
-	// 1. Сначала пробуем загрузить свои вопросы
 	const customQuestions = getCustomQuestions();
 
 	if (customQuestions) {
-		// Если есть кастомные вопросы, возвращаем их напрямую.
-		// Нам не нужно выбирать случайные, так как пользователь создал ровно 15 штук.
 		return customQuestions;
 	}
 
-	// 2. Если своих вопросов нет, работаем по старой логике (стандартные вопросы)
 	return pool.map(group => {
 		const randomIndex = Math.floor(Math.random() * group.length);
 		return group[randomIndex];

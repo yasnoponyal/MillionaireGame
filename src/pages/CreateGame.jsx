@@ -78,11 +78,10 @@ function CreateGame() {
 		navigate('/question/0')
 	}
 
-    // Обновленная валидация: проверяем title, все answers и наличие correctAnswer
     const isGameReady = questions.every(q => 
         q.title.trim() !== '' && 
         q.answers.every(a => a.trim() !== '') &&
-        q.correctAnswer !== '' && // Проверка, что выбран правильный ответ
+        q.correctAnswer !== '' && 
         q.correctAnswer !== null
     );
 
