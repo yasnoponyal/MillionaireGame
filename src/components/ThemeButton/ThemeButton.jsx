@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useLocalStorage from '../../utils/UseLocalStorage';
+import useLocalStorage from '../../utils/useLocalStorage';
 
 import SunnyIcon from '@mui/icons-material/Sunny';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
